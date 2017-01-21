@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "fooda-tweaks",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Making Fooda even more awesome!",
+    "description": "The description of the application"
+  }
+}
