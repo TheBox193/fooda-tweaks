@@ -12,13 +12,12 @@ chrome.alarms.getAll( function(alarms) {
 	console.log('boot alarms: ', alarms);
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+chrome.runtime.onMessage.addListener(function(request, sender){
 	chrome.alarms.getAll( function(alarms) {
 		console.log('alarms before: ', alarms);
 	});
 	console.log(request);
-	if(request.action == 'createAlarms')
-	{
+	if(request.action == 'createAlarms') {
 		const alarms = request.dates.map(function(date) {
 			return {
 				name: date,
@@ -43,13 +42,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	});
 });
 
-chrome.alarms.onAlarm.addListener(function(alarm) {
-	chrome.notifications.create({
-		type: 'basic',
-		iconUrl: 'images/icon-128.png',
-		title: 'Fooda Tweaks',
-		message: 'Don\'t forget to order!'
-	});
+chrome.alarms.onAlarm.addListener(function() {
+	// chrome.notifications.create({
+	// 	type: 'basic',
+	// 	iconUrl: 'images/icon-128.png',
+	// 	title: 'Fooda Tweaks',
+	// 	message: 'Don\'t forget to order!'
+	// });
+	console.log('alarm would have fired.');
 });
 
 chrome.notifications.onClicked.addListener(function(id) {
