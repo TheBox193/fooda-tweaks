@@ -4,6 +4,8 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import del from 'del';
 import runSequence from 'run-sequence';
 import {stream as wiredep} from 'wiredep';
+import jeditor from 'gulp-json-editor';
+import Version from 'maniver';
 
 const $ = gulpLoadPlugins();
 
@@ -63,7 +65,12 @@ gulp.task('html',  () => {
 
 gulp.task('versionBump', () => {
   var manifest = require('./app/manifest.json');
-  var manifestDist = require('./dist/manifest.json');
+  var manifestDist;
+  	try {
+		manifestDist = require('./dist/manifest.json');
+	} catch (ex) {
+		manifestDist = manifest;
+	}
 
   // Only bump if no manual version was entered into the manifest.json
   if (manifest.version === manifestDist.version) {
@@ -79,7 +86,7 @@ gulp.task('versionBump', () => {
 });
 
 gulp.task('chromeManifest', ['versionBump'], () => {
-  var manifest = require('./dist/manifest.json');
+  // var manifest = require('./dist/manifest.json');
 
   return gulp.src('app/manifest.json')
     .pipe($.chromeManifest({

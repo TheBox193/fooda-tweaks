@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -36,26 +36,24 @@
     "page": "options.html",
     "chrome_style": true
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://app.fooda.com/*",
-        "*://*.fooda.com/*",
-        "*://fooda.com/*"
-      ],
-      "js": [
-        "bower_components/jquery/dist/jquery.min.js",
-        "bower_components/moment/min/moment.min.js",
-        "bower_components/lodash/dist/lodash.min.js",
-        "scripts.es5/contentscript.js"
-      ],
-		"css": [
-			"styles/fooda.css"
-		],
-      "run_at": "document_end",
-      "all_frames": false
-    }
-  ],
+  "content_scripts": [{
+    "matches": [
+      "https://app.fooda.com/*",
+      "*://*.fooda.com/*",
+      "*://fooda.com/*"
+    ],
+    "js": [
+      "bower_components/jquery/dist/jquery.min.js",
+      "bower_components/moment/min/moment.min.js",
+      "bower_components/lodash/dist/lodash.min.js",
+      "scripts.es5/contentscript.js"
+    ],
+    "css": [
+      "styles/fooda.css"
+    ],
+    "run_at": "document_end",
+    "all_frames": false
+  }],
   "browser_action": {
     "default_icon": {
       "19": "images/icon-19.png",
@@ -67,6 +65,6 @@
   "web_accessible_resources": [
     "images/icon-48.png",
     "images/icon-128.png",
-	 "styles/fooda.css"
+    "styles/fooda.css"
   ]
 }
