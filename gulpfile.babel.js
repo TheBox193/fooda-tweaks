@@ -8,6 +8,7 @@ import jeditor from 'gulp-json-editor';
 import Version from 'maniver';
 
 const $ = gulpLoadPlugins();
+let appVersion;
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -73,19 +74,23 @@ gulp.task('versionBump', () => {
 	}
 
   // Only bump if no manual version was entered into the manifest.json
-  if (manifest.version === manifestDist.version) {
+  if (manifest.version !== manifestDist.version) {
+	  appVersion = manifest.version;
+  } else {
     const version = new Version( manifest.version );
     version.maintenance();
 
+	 appVersion = version.version();
+
     return gulp.src("./app/manifest.json")
     .pipe(jeditor({
-      'version': version.version()
+      'version': appVersion
     }))
     .pipe(gulp.dest("app"));
   }
 });
 
-gulp.task('chromeManifest', ['versionBump'], () => {
+gulp.task('chromeManifest', () => {
   // var manifest = require('./dist/manifest.json');
 
   return gulp.src('app/manifest.json')
@@ -142,15 +147,14 @@ gulp.task('wiredep', () => {
 });
 
 gulp.task('package', function () {
-  var manifest = require('./dist/manifest.json');
   return gulp.src('dist/**')
-      .pipe($.zip('fooda-tweaks-' + manifest.version + '.zip'))
+      .pipe($.zip('fooda-tweaks-' + appVersion + '.zip'))
       .pipe(gulp.dest('package'));
 });
 
 gulp.task('build', (cb) => {
   runSequence(
-    'lint', 'babel', 'chromeManifest',
+    'lint', 'babel', 'versionBump', 'chromeManifest',
     ['html', 'images', 'extras'],
     'size', 'package', cb);
 });
