@@ -3,12 +3,15 @@ var loc = window.location.pathname.split('/');
 
 var TAX = 0.105;
 
+var css = chrome.extension.getURL('styles/fooda.css');
+$('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
+
 if (loc[3] === 'select_events' && loc[5] === 'items' && loc[6] === undefined) {
 	var moneyString = $('.marketing__item').text();
 	if (moneyString) {
 		var moneyAvailable = Number(moneyString.match(/\$[0-9]?[0-9]\.[0-9][0-9]/)[0].substr(1));
 
-	
+
 		const option1 = $('*[data-selection-option="Below $7"]')[0];
 		option1.dataset.selectionOption = 'Below $' + moneyAvailable;
 		$(option1).find('a').text('Below $' + moneyAvailable);
@@ -38,21 +41,34 @@ if (loc[3] === 'select_events' && loc[5] === 'items' && loc[6] === undefined) {
 		});
 	}
 
+	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
 }
 
+/** An items page */
 if (loc[6]) {
+	/** Fix 'buy now' verbiage to 'add to card' */
 	$('.btn.buy-now').each(function(i, btn) {
 		btn.value = 'Add to Cart';
+	});
+
+	/** Track back to restaurant button */
+	$('.btn.buy-now').on('click', function() {
+		var href = $('.return-menu a').attr('href');
+		chrome.storage.local.set({'lastRestaurant': href});
 	});
 }
 
 if (loc[5] === 'checkout') {
-	var dateArray = $('.delivery-by').text().match(/, ([A-Za-z]{3}) ([0-9]{1,2})/);
-	var date = moment(dateArray[1] + dateArray[2], 'MMMD').toISOString();
+	chrome.storage.local.get({ordered: [], lastRestaurant: ''}, function (result) {
+		/** Restore back button to go to restaurant */
+		if (result.lastRestaurant !== '') {
+			$('.return-menu a').attr('href', result.lastRestaurant);
+		}
 
+		var dateArray = $('.delivery-by').text().match(/, ([A-Za-z]{3}) ([0-9]{1,2})/);
+		var date = moment(dateArray[1] + dateArray[2], 'MMMD').toISOString();
 
-	chrome.storage.local.get({ordered: []}, function (result) {
 		// the input argument is ALWAYS an object containing the queried keys
 		// so we select the key we need
 		var ordered = result.ordered;
@@ -69,7 +85,9 @@ if (loc[5] === 'checkout') {
 	});
 }
 
+/** Main restaurant selectoin page */
 if (loc[1] === 'my') {
+	/** Extracting dates that have and don't have orders */
 	var dates = $('.cal__day--active, .cal__day');
 	var checked = ':has(.cal__day__inner__box--checked)';
 

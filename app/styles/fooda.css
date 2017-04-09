@@ -1,0 +1,60 @@
+/* Lets use flexboxes! Fluid layout */
+.item-group--grid {
+ 	width: auto;
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 30px;
+	justify-content: center;
+}
+
+/* h2 are part of the grid, and need some special treatment for flex */
+/* Make h2s a bit more visible */
+.item-group--grid h2 {
+	flex-basis: 100%;
+	text-align: center;
+	margin-top: 60px;
+	margin-bottom: 30px;
+	font-size: 35px;
+}
+
+/* Stylistic titles */
+.item-group--grid h2:before, .item-group--grid h2:after {
+	content: "⨳";
+	padding: 0 10px;
+}
+
+/* Make items more compact & concistent marings */
+.item-group--grid .item {
+	margin: 15px !important;
+	border: 0;
+}
+
+/* Shift photos up by a hair */
+.item__photo {
+	height: 215px; /*240px*/
+	top: -10px;
+}
+
+/* Remove positioning, move closer to photo */
+.item__content {
+	position: inherit;
+	padding-top: 0px;
+}
+
+/* Remove animations to keep things staic and positionable */
+.modernizr-csstransforms3d .item-group--grid .item__content,
+.modernizr-csstransforms3d .item-group--grid .item:hover .item__desc, .modernizr-csstransforms3d .item-group--grid .item--no-photo:hover .item__desc {
+	transform: none !important;
+	-webkit-transform: none;
+}
+
+/* Make description alaways visibale, soften to grey */
+.item__desc {
+	position: inherit;
+	color: #888;
+}
+
+/* Why so bold? */
+.item__desc__text__name {
+	text-transform: none;
+}

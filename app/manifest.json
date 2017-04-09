@@ -49,6 +49,9 @@
         "bower_components/lodash/dist/lodash.min.js",
         "scripts.es5/contentscript.js"
       ],
+		"css": [
+			"styles/fooda.css"
+		],
       "run_at": "document_end",
       "all_frames": false
     }
@@ -63,6 +66,7 @@
   },
   "web_accessible_resources": [
     "images/icon-48.png",
-    "images/icon-128.png"
+    "images/icon-128.png",
+	 "styles/fooda.css"
   ]
 }

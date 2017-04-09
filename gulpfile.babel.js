@@ -61,14 +61,32 @@ gulp.task('html',  () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('chromeManifest', () => {
+gulp.task('versionBump', () => {
+  var manifest = require('./app/manifest.json');
+  var manifestDist = require('./dist/manifest.json');
+
+  // Only bump if no manual version was entered into the manifest.json
+  if (manifest.version === manifestDist.version) {
+    const version = new Version( manifest.version );
+    version.maintenance();
+
+    return gulp.src("./app/manifest.json")
+    .pipe(jeditor({
+      'version': version.version()
+    }))
+    .pipe(gulp.dest("app"));
+  }
+});
+
+gulp.task('chromeManifest', ['versionBump'], () => {
+  var manifest = require('./dist/manifest.json');
+
   return gulp.src('app/manifest.json')
     .pipe($.chromeManifest({
-      buildnumber: true,
       background: {
-        target: 'scripts.es5/background.js',
+        target: 'scripts/background.js',
         exclude: [
-          'scripts.es5/chromereload.js'
+          'scripts/chromereload.js'
         ]
       }
   }))
