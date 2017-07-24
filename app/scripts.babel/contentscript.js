@@ -91,12 +91,7 @@ if (loc[1] === 'my') {
 	var dates = $('.cal__day--active, .cal__day');
 	var checked = ':has(.cal__day__inner__box--checked)';
 
-	var orderModal = $('#js-receipt-modal');
-	if (orderModal.length === 1) {
-		// We have an order on this day! Woo!
-		var date = orderModal.find('.receipt__delivery-section .receipt__info').text();
-		$('.receipt__body').append('<a target="_blank" href="mailto:info@fooda.com?subject=[Sprout Social] Cancel Order&body=Please cancel my order for '+date+'. \n\n Thanks so much!">Cancel Order</a>');
-	}
+
 
 	var extractDate = function(i, item) {
 		return item.href.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})/);
@@ -114,4 +109,13 @@ if (loc[1] === 'my') {
 		action: 'cancelAlarms',
 		dates: _.uniq(datesOrdered)
 	});
+}
+
+/** Any order modal */
+var orderModal = $('#js-receipt-modal');
+if (orderModal.length === 1) {
+	// We have an order on this day! Woo!
+	var date = orderModal.find('.receipt__delivery-section .receipt__info').text();
+	var receiptNumber = orderModal.find('.receipt__body-label').text();
+	$('.receipt__body').append('<a target="_blank" href="mailto:info@fooda.com?subject=[Sprout Social] Cancel Order&body=Please cancel my order '+receiptNumber+' for '+date+'. \n\n Thanks so much!">Cancel Order</a>');
 }
