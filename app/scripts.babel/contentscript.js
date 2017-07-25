@@ -116,6 +116,9 @@ var orderModal = $('#js-receipt-modal');
 if (orderModal.length === 1) {
 	// We have an order on this day! Woo!
 	var date = orderModal.find('.receipt__delivery-section .receipt__info').text();
-	var receiptNumber = orderModal.find('.receipt__body-label').text();
-	$('.receipt__body').append('<a target="_blank" href="mailto:info@fooda.com?subject=[Sprout Social] Cancel Order&body=Please cancel my order '+receiptNumber+' for '+date+'. \n\n Thanks so much!">Cancel Order</a>');
+	var receiptNumber = orderModal.find('.receipt__body-label').text() || '';
+	var venue = $('.secondary-bar__event-text').text() || '';
+	var url = 'https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&source=mailto&su=Cancel+Order: '+venue+'&to=info@fooda.com&body=Please+cancel+my+order+'+receiptNumber+'+for+'+date+'.++Thanks+so+much!';
+	// $('.receipt__body').append('<a target="_blank" href="mailto:info@fooda.com?subject=[Sprout Social] Cancel Order&body=Please cancel my order '+receiptNumber+' for '+date+'. \n\n Thanks so much!">Cancel Order</a>');
+	$('.receipt__body').append('<a target="_blank" href="'+url.replace('#', '')+'">Cancel Order</a>');
 }
