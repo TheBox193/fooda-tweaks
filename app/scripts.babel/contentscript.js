@@ -1,12 +1,16 @@
 'use strict';
 var loc = window.location.pathname.split('/');
+var isMenu = (loc[3] === 'select_events' && loc[5] === 'items' && loc[6] === undefined);
+var isItem = (loc[6]);
+var isCheckout = (loc[5] === 'checkout');
+var isRestuarants = (loc[1] === 'my');
 
 var TAX = 0.105;
 
 var css = chrome.extension.getURL('styles/fooda.css');
 $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
 
-if (loc[3] === 'select_events' && loc[5] === 'items' && loc[6] === undefined) {
+if (isMenu) {
 	var moneyString = $('.marketing__item').text();
 	if (moneyString) {
 		var moneyAvailable = Number(moneyString.match(/\$[0-9]?[0-9]\.[0-9][0-9]/)[0].substr(1));
@@ -41,12 +45,16 @@ if (loc[3] === 'select_events' && loc[5] === 'items' && loc[6] === undefined) {
 		});
 	}
 
+	$('.item-group__category').on('click', function(ev) {
+		$(ev.currentTarget).siblings('div').toggle();
+	});
+
 	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
 }
 
 /** An items page */
-if (loc[6]) {
+if (isItem) {
 	/** Fix 'buy now' verbiage to 'add to card' */
 	$('.btn.buy-now').each(function(i, btn) {
 		btn.value = 'Add to Cart';
@@ -59,7 +67,7 @@ if (loc[6]) {
 	});
 }
 
-if (loc[5] === 'checkout') {
+if (isCheckout) {
 	chrome.storage.local.get({ordered: [], lastRestaurant: ''}, function (result) {
 		/** Restore back button to go to restaurant */
 		if (result.lastRestaurant !== '') {
@@ -85,8 +93,8 @@ if (loc[5] === 'checkout') {
 	});
 }
 
-/** Main restaurant selectoin page */
-if (loc[1] === 'my') {
+/** Main restaurant selection page */
+if (isRestuarants) {
 	/** Extracting dates that have and don't have orders */
 	var dates = $('.cal__day--active, .cal__day');
 	var checked = ':has(.cal__day__inner__box--checked)';
