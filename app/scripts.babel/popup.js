@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('Fooda fooda! Popup');
+window.console.log('Fooda fooda! Popup');
 chrome.alarms.getAll(function (alarms) {
 	$('.alarms').append('<p>Nothing order for these days yet..</p>');
 	alarms.forEach(function(alarm) {

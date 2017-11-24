@@ -1,22 +1,22 @@
 'use strict';
 
 chrome.runtime.onInstalled.addListener(function (details) {
-	console.log('previousVersion', details.previousVersion);
+	window.console.log('previousVersion', details.previousVersion);
 });
 
 // chrome.browserAction.setBadgeText({ text: '\'Allo' });
 
-console.log('\'Allo \'Allo! Event Page for Browser Action');
+window.console.log('\'Allo \'Allo! Event Page for Browser Action');
 
 chrome.alarms.getAll( function(alarms) {
-	console.log('boot alarms: ', alarms);
+	window.console.log('boot alarms: ', alarms);
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender){
+chrome.runtime.onMessage.addListener(function(request){
 	chrome.alarms.getAll( function(alarms) {
-		console.log('alarms before: ', alarms);
+		window.console.log('alarms before: ', alarms);
 	});
-	console.log(request);
+	window.console.log(request);
 	if(request.action == 'createAlarms') {
 		const alarms = request.dates.map(function(date) {
 			return {
@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener(function(request, sender){
 	}
 
 	chrome.alarms.getAll( function(alarms) {
-		console.log('alarms after: ', alarms);
+		window.console.log('alarms after: ', alarms);
 	});
 });
 
@@ -49,7 +49,7 @@ chrome.alarms.onAlarm.addListener(function() {
 	// 	title: 'Fooda Tweaks',
 	// 	message: 'Don\'t forget to order!'
 	// });
-	console.log('alarm would have fired.');
+	window.console.log('alarm would have fired.');
 });
 
 chrome.notifications.onClicked.addListener(function(id) {

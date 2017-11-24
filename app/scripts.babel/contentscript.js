@@ -87,7 +87,7 @@ if (isCheckout) {
 			// you can use strings instead of objects
 			// if you don't  want to define default values
 			chrome.storage.local.get('ordered', function (result) {
-				console.log(result.ordered);
+				window.console.log(result.ordered);
 			});
 		});
 	});
