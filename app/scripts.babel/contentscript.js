@@ -13,34 +13,34 @@ $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head'
 if (isMenu) {
 	var moneyString = $('.marketing__item').text();
 	if (moneyString) {
-		var moneyAvailable = Number(moneyString.match(/\$[0-9]?[0-9]\.[0-9][0-9]/)[0].substr(1));
-
+		moneyString = moneyString.match(/\$[0-9]?[0-9]\.[0-9][0-9]/)[0].substr(1).replace('.', '');
+		var moneyAvailable = Number(moneyString);
 
 		const option1 = $('*[data-selection-option="Below $7"]')[0];
 		option1.dataset.selectionOption = 'Below $' + moneyAvailable;
-		$(option1).find('a').text('Below $' + moneyAvailable);
+		$(option1).find('a').text('Below $' + moneyAvailable/100);
 
 		const option2 = $('*[data-selection-option="$7 - $9"]')[0];
-		option2.dataset.selectionOption = '$' + moneyAvailable + ' - $' + (moneyAvailable + 2);
-		$(option2).find('a').text('$' + moneyAvailable + ' - $' + (moneyAvailable + 2));
+		option2.dataset.selectionOption = '$' + moneyAvailable + ' - $' + (moneyAvailable + 200);
+		$(option2).find('a').text('$' + moneyAvailable/100 + ' - $' + ((moneyAvailable + 200) / 100));
 
 		const option3 = $('*[data-selection-option="Above $9"]')[0];
-		option3.dataset.selectionOption = 'Above $' + (moneyAvailable + 2);
-		$(option3).find('a').text('Above $' + (moneyAvailable + 2));
+		option3.dataset.selectionOption = 'Above $' + (moneyAvailable + 200);
+		$(option3).find('a').text('Above $' + ((moneyAvailable + 200) / 100));
 
 		var $items = $('.item');
 
 		$items.each(function (index, item) {
 			var $item = $(item);
 
-			var price = (Number($item.find('.item__price').text().substr(1)) * (1 + TAX) );
+			var price = (Number($item.find('.item__price').text().substr(1).replace('.', '')) * (1 + TAX) );
 
 			if (price < moneyAvailable) {
 				item.dataset.price = 'Below $' + moneyAvailable;
-			} else if (price < moneyAvailable + 2) {
-				item.dataset.price = '$' + moneyAvailable + ' - $' + (moneyAvailable + 2);
+			} else if (price < moneyAvailable + 200) {
+				item.dataset.price = '$' + moneyAvailable + ' - $' + (moneyAvailable + 200);
 			} else {
-				item.dataset.price = 'Above $' + (moneyAvailable + 2);
+				item.dataset.price = 'Above $' + (moneyAvailable + 200);
 			}
 		});
 	}
