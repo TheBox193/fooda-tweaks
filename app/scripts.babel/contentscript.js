@@ -51,6 +51,13 @@ if (isMenu) {
 
 	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
+
+	$('.item')
+		.prepend('<div class="hide-item">X</div>')
+		.find('.hide-item')
+		.on('click', (ev) => {
+			$(ev.target.parentNode).remove();
+		});
 }
 
 /** An items page */

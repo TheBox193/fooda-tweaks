@@ -60,3 +60,9 @@
 .item__desc__text__name {
 	text-transform: none;
 }
+
+/* Move the item X to the right */
+.hide-item {
+	float: right;
+	font-weight: 500;
+}
