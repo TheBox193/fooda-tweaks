@@ -78,6 +78,22 @@ if (isMenu) {
 	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
 
+	$('.filter-bar > ul').append('<div class="toggle__option vote-up">Only 👍</div>')
+		.find('.vote-up')
+		.on('click', () => {
+			$('.item[data-vote!="up"]').filter((i, item) => {
+				return item.parentNode.nodeName !== 'SPAN';
+			}).wrap('<span style="display: none;"/>');
+		});
+
+	$('.filter-bar > ul').append('<div class="toggle__option vote-down">Hide 👎</div>')
+		.find('.vote-down')
+		.on('click', () => {
+			$('.item[data-vote="down"]').filter((i, item) => {
+				return item.parentNode.nodeName !== 'SPAN';
+			}).wrap('<span style="display: none;"/>');
+		});
+
 	$items.append('<div class="hide-item">X</div>')
 		.find('.hide-item')
 		.on('click', (ev) => {
