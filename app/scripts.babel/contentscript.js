@@ -6,12 +6,31 @@ var isCheckout = (loc[5] === 'checkout');
 var isRestuarants = (loc[1] === 'my');
 
 var TAX = 0.105;
+var api = 'https://jstassen-01.jstassen.com/apps/chromeextensions/fooda-tweaks/';
 
 var css = chrome.extension.getURL('styles/fooda.css');
 $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
 
+// Oh snap
+// if (_.isEmpty(localStorage.getItem('USER_ID'))) {
+// 	const USER_ID = $('body').html().match(/"dimension1" ?: ?"(\w{1,})"/)[1];
+// 	localStorage.setItem('USER_ID', USER_ID);
+// }
+
+// Get & Store Email
+if (_.isEmpty(localStorage.getItem('email')) || _.isEmpty(localStorage.getItem('USER_ID'))) {
+	$.get('https://app.fooda.com/settings/profile').done((resp) => {
+		const $doc = $(resp);
+		const email = $doc.find('input#user_email').val();
+		const USER_ID = $doc.find('.edit_user').attr('id').replace('edit_user_', '');
+		localStorage.setItem('email', email);
+		localStorage.setItem('USER_ID', USER_ID);
+	});
+}
+
 if (isMenu) {
 	var moneyString = $('.marketing__item').text();
+	const $items = $('.item');
 	if (moneyString) {
 		moneyString = moneyString.match(/\$[0-9]?[0-9]\.[0-9][0-9]/)[0].substr(1).replace('.', '');
 		var moneyAvailable = Number(moneyString);
@@ -28,11 +47,8 @@ if (isMenu) {
 		option3.dataset.selectionOption = 'Above $' + (moneyAvailable + 200);
 		$(option3).find('a').text('Above $' + ((moneyAvailable + 200) / 100));
 
-		var $items = $('.item');
-
 		$items.each(function (index, item) {
 			var $item = $(item);
-
 			var price = (Number($item.find('.item__price').text().substr(1).replace('.', '')) * (1 + TAX) );
 
 			if (price < moneyAvailable) {
@@ -45,6 +61,11 @@ if (isMenu) {
 		});
 	}
 
+	$items.each(function (index, item) {
+		const itemId = item.children[0].href.split('/').pop();
+		item.dataset.itemId = itemId;
+	});
+
 	$('.item-group__category').on('click', function(ev) {
 		$(ev.currentTarget).siblings('div').toggle();
 	});
@@ -52,12 +73,63 @@ if (isMenu) {
 	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
 
-	$('.item')
-		.prepend('<div class="hide-item">X</div>')
+	$items.append('<div class="hide-item">X</div>')
 		.find('.hide-item')
 		.on('click', (ev) => {
 			$(ev.target.parentNode).remove();
 		});
+
+	$items.append('<div class="vote-item"><div class="vote-item-up" data-vote-type="up">👍<div class="vote-item-up-count" /></div><div class="vote-item-down" data-vote-type="down">👎<div class="vote-item-down-count" /></div></div>')
+		.find('.vote-item-up, .vote-item-down')
+		.on('click', (ev) => {
+			const itemId = $(ev.target).closest('.item').data('itemId');
+			const previouseVote = getItemVote(itemId);
+			let vote = $(ev.target).closest('.vote-item > div').data('voteType');
+
+			if (previouseVote === vote) vote = 'none';
+			if (vote !== 'up' && vote !== 'down' && vote !== 'none') return;
+
+			setItemVote(itemId, vote);
+			decrementVoteCount(itemId, previouseVote);
+			incrementVoteCount(itemId, vote);
+
+			var payload = {userId: getUserId(), email: localStorage.getItem('email'), vendorName: getVendorName(itemId), itemId: itemId, vote: vote};
+
+			$.post(api + 'votes', payload);
+		});
+
+	$.get(api + 'votes').then((data) => {
+		data.forEach( (itemVote) => {
+			const {itemId, vote, userId} = itemVote;
+			if (userId === getUserId())
+				setItemVote(itemId, vote);
+
+			incrementVoteCount(itemId, vote);
+		});
+	});
+}
+
+const getItem = (itemId) => $('*[data-item-id="'+itemId+'"]');
+
+const getItemData = (itemId, key) => getItem(itemId)[0].dataset[key];
+const setItemData = (itemId, key, value) => getItem(itemId)[0].dataset[key] = value;
+
+const getUserId = () => localStorage.getItem('USER_ID');
+const getItemVote = (itemId) => getItemData(itemId, 'vote');
+const getVendorName = (itemId) => getItem(itemId).data('vendor_name');
+function getItemVoteCount(itemId, vote) {
+	const count = Number(getItemData(itemId, 'vote'+vote+'s'));
+	return (_.isFinite(count)) ? count : 0;
+}
+
+const incrementVoteCount = (itemId, vote) => setItemVoteCount(itemId, vote, getItemVoteCount(itemId, vote) + 1);
+const decrementVoteCount = (itemId, vote) => setItemVoteCount(itemId, vote, getItemVoteCount(itemId, vote) - 1);
+
+const setItemVote = (itemId, vote) => setItemData(itemId, 'vote', vote);
+function setItemVoteCount(itemId, vote, count) {
+	const $item = getItem(itemId);
+	setItemData(itemId, 'vote'+vote+'s', count);
+	$item.find('.vote-item-'+vote+'-count').text(String(count));
 }
 
 /** An items page */
@@ -105,8 +177,6 @@ if (isRestuarants) {
 	/** Extracting dates that have and don't have orders */
 	var dates = $('.cal__day--active, .cal__day');
 	var checked = ':has(.cal__day__inner__box--checked)';
-
-
 
 	var extractDate = function(i, item) {
 		return item.href.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})/);
