@@ -62,7 +62,12 @@ if (isMenu) {
 	}
 
 	$items.each(function (index, item) {
-		const itemId = item.children[0].href.split('/').pop();
+		// const itemId = item.children[0].href.split('/').pop();
+		const $item = $(item);
+		const itemName = $item.find('.item__name').text();
+		const itemId = $item.find('.item__photo__img').attr('src').split('/').pop().split('.')[0];
+		item.dataset.itemName = itemName;
+		item.dataset.itemScope = item.dataset.vendor_name + '::' + itemName;
 		item.dataset.itemId = itemId;
 	});
 
@@ -93,7 +98,14 @@ if (isMenu) {
 			decrementVoteCount(itemId, previouseVote);
 			incrementVoteCount(itemId, vote);
 
-			var payload = {userId: getUserId(), email: localStorage.getItem('email'), vendorName: getVendorName(itemId), itemId: itemId, vote: vote};
+			var payload = {
+				userId: getUserId(),
+				email: getEmail(),
+				vendorName: getVendorName(itemId),
+				itemScope: getItemScope(itemId),
+				itemId: itemId,
+				vote: vote
+			};
 
 			$.post(api + 'votes', payload);
 		});
@@ -101,6 +113,9 @@ if (isMenu) {
 	$.get(api + 'votes').then((data) => {
 		data.forEach( (itemVote) => {
 			const {itemId, vote, userId} = itemVote;
+
+			if (getItem(itemId).length === 0) return;
+
 			if (userId === getUserId())
 				setItemVote(itemId, vote);
 
@@ -115,8 +130,10 @@ const getItemData = (itemId, key) => getItem(itemId)[0].dataset[key];
 const setItemData = (itemId, key, value) => getItem(itemId)[0].dataset[key] = value;
 
 const getUserId = () => localStorage.getItem('USER_ID');
+const getEmail = () => localStorage.getItem('email');
 const getItemVote = (itemId) => getItemData(itemId, 'vote');
-const getVendorName = (itemId) => getItem(itemId).data('vendor_name');
+const getVendorName = (itemId) => getItemData(itemId, 'vendor_name');
+const getItemScope = (itemId) => getItemData(itemId, 'itemScope');
 function getItemVoteCount(itemId, vote) {
 	const count = Number(getItemData(itemId, 'vote'+vote+'s'));
 	return (_.isFinite(count)) ? count : 0;
@@ -207,3 +224,17 @@ if (orderModal.length === 1) {
 	// $('.receipt__body').append('<a target="_blank" href="mailto:info@fooda.com?subject=[Sprout Social] Cancel Order&body=Please cancel my order '+receiptNumber+' for '+date+'. \n\n Thanks so much!">Cancel Order</a>');
 	$('.receipt__body').append('<a target="_blank" href="'+url.replace('#', '')+'">Cancel Order</a>');
 }
+
+// $items= $('.order_item .order_star_blue');
+// votes = [];
+// item = $items.each((index, item) => {
+//  const $item = $(item);debugger;
+//  const starval = String($item.data('rating'));
+//  const id = $item.data('index');
+//  let voteval = '';
+//  if (starval === '1' || starval === '2') voteval = 'down';
+//  if (starval === '3' || starval === '4' || starval === '5') voteval = 'up';
+//  if (voteval !== '')
+//   votes.push({id, starval, voteval});
+// });
+// votes;
