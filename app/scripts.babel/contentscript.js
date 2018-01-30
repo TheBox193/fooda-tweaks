@@ -11,6 +11,11 @@ var api = 'https://jstassen-01.jstassen.com/apps/chromeextensions/fooda-tweaks/'
 var css = chrome.extension.getURL('styles/fooda.css');
 $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
 
+
+// $('.item__photo__img').each((i, img) => {
+// 	img.src = img.src.slice(0, img.src.indexOf('?'));
+// });
+
 // Oh snap
 // if (_.isEmpty(localStorage.getItem('USER_ID'))) {
 // 	const USER_ID = $('body').html().match(/"dimension1" ?: ?"(\w{1,})"/)[1];
@@ -71,6 +76,7 @@ if (isMenu) {
 		item.dataset.itemId = itemId;
 	});
 
+	/** Toggle sections */
 	$('.item-group__category').on('click', function(ev) {
 		$(ev.currentTarget).siblings('div').toggle();
 	});
@@ -78,21 +84,21 @@ if (isMenu) {
 	/** Shorten the top banner*/
 	$('.jumbotron').height(220);
 
-	$('.filter-bar > ul').append('<div class="toggle__option vote-up">Only 👍</div>')
-		.find('.vote-up')
-		.on('click', () => {
-			$('.item[data-vote!="up"]').filter((i, item) => {
-				return item.parentNode.nodeName !== 'SPAN';
-			}).wrap('<span style="display: none;"/>');
-		});
+	// $('.filter-bar > ul').append('<div class="toggle__option vote-up">Only 👍</div>')
+	// 	.find('.vote-up')
+	// 	.on('click', () => {
+	// 		$('.item[data-vote!="up"]').filter((i, item) => {
+	// 			return item.parentNode.nodeName !== 'SPAN';
+	// 		}).wrap('<span style="display: none;"/>');
+	// 	});
 
-	$('.filter-bar > ul').append('<div class="toggle__option vote-down">Hide 👎</div>')
-		.find('.vote-down')
-		.on('click', () => {
-			$('.item[data-vote="down"]').filter((i, item) => {
-				return item.parentNode.nodeName !== 'SPAN';
-			}).wrap('<span style="display: none;"/>');
-		});
+	// $('.filter-bar > ul').append('<div class="toggle__option vote-down">Hide 👎</div>')
+	// 	.find('.vote-down')
+	// 	.on('click', () => {
+	// 		$('.item[data-vote="down"]').filter((i, item) => {
+	// 			return item.parentNode.nodeName !== 'SPAN';
+	// 		}).wrap('<span style="display: none;"/>');
+	// 	});
 
 	$items.append('<div class="hide-item">X</div>')
 		.find('.hide-item')
@@ -135,7 +141,7 @@ if (isMenu) {
 			if (userId === getUserId())
 				setItemVote(itemId, vote);
 
-			incrementVoteCount(itemId, vote);
+			// incrementVoteCount(itemId, vote);
 		});
 	});
 }
@@ -241,16 +247,43 @@ if (orderModal.length === 1) {
 	$('.receipt__body').append('<a target="_blank" href="'+url.replace('#', '')+'">Cancel Order</a>');
 }
 
-// $items= $('.order_item .order_star_blue');
-// votes = [];
-// item = $items.each((index, item) => {
-//  const $item = $(item);debugger;
-//  const starval = String($item.data('rating'));
-//  const id = $item.data('index');
-//  let voteval = '';
-//  if (starval === '1' || starval === '2') voteval = 'down';
-//  if (starval === '3' || starval === '4' || starval === '5') voteval = 'up';
-//  if (voteval !== '')
-//   votes.push({id, starval, voteval});
-// });
-// votes;
+
+// function scrapeOrders() {
+// 	$.get(api + 'users/' + getUserId() + '/needsUpdate').done((resp) => {
+
+// 		// if (_.isEmpty(localStorage.getItem('scrapedOrders'))) {
+// 		if(resp.scrape) {
+// 			$.get('https://app.fooda.com/settings/orders').done((resp) => {
+// 				const $doc = $(resp);
+// 				const $items= $doc.find('.order_item');
+// 				let orders = [];
+// 				$items.each((index, item) => {
+// 					const $item = $(item);
+// 					const vendor_name = $item.closest('.restaurant-name')
+// 					.contents()
+// 					.filter(function() {
+// 						return this.nodeType === 3; //Node.TEXT_NODE
+// 					}).text().trim();
+
+// 					const dirtyItemName = $item.find('.item-name').text();
+// 					const orderCountIndex = dirtyItemName.lastIndexOf('(');
+// 					const itemName = dirtyItemName.slice(0, orderCountIndex).trim();
+
+// 					const itemScope = vendor_name + '::' + itemName;
+
+// 					const starval = String($item.find('.order_star_blue').data('rating'));
+
+// 					orders.push({starval, itemScope});
+// 				});
+// 				orders = _.uniq(orders, 'itemScope');
+
+// 				localStorage.setItem('scrapedOrders', 'done');
+
+// 				const payload = {orders, userId: getUserId(), email: getEmail()};
+
+// 				$.post(api + 'users/' + getUserId() + '/orders', payload);
+// 			});
+// 		}
+// 	});
+// }
+// scrapeOrders();
