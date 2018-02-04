@@ -141,7 +141,7 @@ if (isMenu) {
 			if (userId === getUserId())
 				setItemVote(itemId, vote);
 
-			// incrementVoteCount(itemId, vote);
+			incrementVoteCount(itemId, vote);
 		});
 	});
 }
