@@ -66,15 +66,18 @@ if (isMenu) {
 		});
 	}
 
+	const itemIndex = [];
 	$items.each(function (index, item) {
-		// const itemId = item.children[0].href.split('/').pop();
 		const $item = $(item);
 		const itemName = $item.find('.item__name').text();
 		const itemId = $item.find('.item__photo__img').attr('src').split('/').pop().split('.')[0];
+		const itemScope = item.dataset.vendor_name + '::' + itemName;
 		item.dataset.itemName = itemName;
-		item.dataset.itemScope = item.dataset.vendor_name + '::' + itemName;
+		item.dataset.itemScope = itemScope;
 		item.dataset.itemId = itemId;
+		itemIndex.push({itemId, itemScope});
 	});
+	$.post(api + 'items', {items: itemIndex});
 
 	/** Toggle sections */
 	$('.item-group__category').on('click', function(ev) {
