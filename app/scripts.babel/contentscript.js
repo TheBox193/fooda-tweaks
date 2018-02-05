@@ -71,7 +71,7 @@ if (isMenu) {
 		const $item = $(item);
 		const itemName = $item.find('.item__name').text();
 		const itemId = $item.find('.item__photo__img').attr('src').split('/').pop().split('.')[0];
-		const itemScope = item.dataset.vendor_name + '::' + itemName;
+		const itemScope = item.dataset.vendor_name.trim() + '::' + itemName.trim();
 		item.dataset.itemName = itemName;
 		item.dataset.itemScope = itemScope;
 		item.dataset.itemId = itemId;
