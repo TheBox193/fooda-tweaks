@@ -186,6 +186,22 @@ if (isItem) {
 		var href = $('.return-menu a').attr('href');
 		chrome.storage.local.set({'lastRestaurant': href});
 	});
+
+	/** Exclude Silverware & Napkins */
+	$('.exclusions').append('<label class="checkbox"><input checked class="fooda-checkbox-blue" type="checkbox" id="silverware"><span>No silverware</span></label>');
+	$('.exclusions').append('<label class="checkbox"><input checked class="fooda-checkbox-blue" type="checkbox" id="napkins"><span>No napkins</span></label>');
+	$('.buy-now-button-for-desktop').mousedown( () => {
+		if (document.getElementById('silverware').checked) {
+			$( '#info_instructions' ).val(function( index, val ) {
+				return val + ' No silverware';
+			});
+		}
+		if (document.getElementById('napkins').checked) {
+			$( '#info_instructions' ).val(function( index, val ) {
+				return val + ' No napkins';
+			});
+		}
+	});
 }
 
 if (isCheckout) {
