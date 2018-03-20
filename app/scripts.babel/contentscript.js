@@ -103,7 +103,7 @@ if (isMenu) {
 			}).wrap('<span style="display: none;"/>');
 		});
 
-	$items.append('<div class="hide-item">X</div>')
+	$items.append('<div class="hide-item" title="Hide until page refresh">X</div>')
 		.find('.hide-item')
 		.on('click', (ev) => {
 			$(ev.target.parentNode).remove();
