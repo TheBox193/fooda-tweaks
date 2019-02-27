@@ -196,7 +196,7 @@ if (isItem) {
 			const noNapkin = document.getElementById('napkins').checked && !val.toLowerCase().includes('napkin');
 
 			if (noSilverware && noNapkin) {
-				return val + ', No silverware & napkins';
+				return val + ', No silverware and napkins';
 			} else if (noSilverware) {
 				return val + ', No silverware';
 			} else if (noNapkin) {
