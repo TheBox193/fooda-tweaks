@@ -187,6 +187,11 @@ if (isItem) {
 		chrome.storage.local.set({'lastRestaurant': href});
 	});
 
+	/** Cleanup Silverware & Napkin messaging out of item instructions */
+	$( '#info_instructions' ).val(function( index, val ) {
+		return _.trim(val.replace(/No silverware and napkins/g, '').replace(/No silverware/g, '').replace(/No napkins/g, ''));
+	});
+
 	/** Exclude Silverware & Napkins */
 	$('.exclusions').append('<label class="checkbox"><input checked class="fooda-checkbox-blue" type="checkbox" id="silverware"><span>No silverware</span></label>');
 	$('.exclusions').append('<label class="checkbox"><input checked class="fooda-checkbox-blue" type="checkbox" id="napkins"><span>No napkins</span></label>');
@@ -194,16 +199,17 @@ if (isItem) {
 		$( '#info_instructions' ).val(function( index, val ) {
 			const noSilverware = document.getElementById('silverware').checked && !val.toLowerCase().includes('silverware');
 			const noNapkin = document.getElementById('napkins').checked && !val.toLowerCase().includes('napkin');
+			const result = [val];
 
 			if (noSilverware && noNapkin) {
-				return val + ', No silverware and napkins';
+				result.push('No silverware and napkins');
 			} else if (noSilverware) {
-				return val + ', No silverware';
+				result.push('No silverware');
 			} else if (noNapkin) {
-				return val + ', No napkins';
-			} else {
-				return val;
+				result.push('No napkins');
 			}
+
+			return result.join(' ');
 		});
 	});
 }
