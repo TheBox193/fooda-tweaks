@@ -39,20 +39,20 @@
   },
   "content_scripts": [
     {
-    "matches": [
+      "matches": [
         "https://app.fooda.com/*",
         "*://*.fooda.com/*",
         "*://fooda.com/*"
-    ],
+      ],
       "js": [
         "bower_components/jquery/dist/jquery.min.js",
         "bower_components/moment/min/moment.min.js",
         "bower_components/lodash/dist/lodash.min.js",
         "scripts/contentscript.js"
       ],
-    "css": [
-      "styles/fooda.css"
-    ],
+      "css": [
+        "styles/fooda.css"
+      ],
       "run_at": "document_end",
       "all_frames": false
     }
