@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "^3.1.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.17.1"
+    "jquery": "^3.5.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.25.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
   }
 }

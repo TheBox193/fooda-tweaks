@@ -11,8 +11,9 @@
   "background": {
     "scripts": [
       "bower_components/moment/min/moment.min.js",
-      "scripts.es5/chromereload.js",
-      "scripts.es5/background.js"
+      "libs/polyfill.min.js",
+      "scripts/chromereload.js",
+      "scripts/background.js"
     ],
     "persistent": true
   },
@@ -36,24 +37,23 @@
     "page": "options.html",
     "chrome_style": true
   },
-  "content_scripts": [{
+  "content_scripts": [
+    {
     "matches": [
-      "https://app.fooda.com/*",
-      "*://*.fooda.com/*",
-      "*://fooda.com/*"
+        "https://app.fooda.com/*",
+        "*://*.fooda.com/*",
+        "*://fooda.com/*"
     ],
-    "js": [
-      "bower_components/jquery/dist/jquery.min.js",
-      "bower_components/moment/min/moment.min.js",
-      "bower_components/lodash/dist/lodash.min.js",
-      "scripts.es5/contentscript.js"
-    ],
-    "css": [
-      "styles/fooda.css"
-    ],
-    "run_at": "document_end",
-    "all_frames": false
-  }],
+      "js": [
+        "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/moment/min/moment.min.js",
+        "bower_components/lodash/dist/lodash.min.js",
+        "scripts/contentscript.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
   "browser_action": {
     "default_icon": {
       "19": "images/icon-19.png",

@@ -55,12 +55,17 @@ gulp.task('images', () => {
 
 gulp.task('html',  () => {
   return gulp.src('app/*.html')
+    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.sourcemaps.init())
     .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
+    .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
     .pipe($.sourcemaps.write())
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
+    .pipe($.if('*.html', $.htmlmin({
+      collapseWhitespace: true,
+      minifyCSS: true,
+      minifyJS: true,
+      removeComments: true
+    })))
     .pipe(gulp.dest('dist'));
 });
 
@@ -91,8 +96,6 @@ gulp.task('versionBump', () => {
 });
 
 gulp.task('chromeManifest', () => {
-  // var manifest = require('./dist/manifest.json');
-
   return gulp.src('app/manifest.json')
     .pipe($.chromeManifest({
       background: {
@@ -102,7 +105,7 @@ gulp.task('chromeManifest', () => {
         ]
       }
   }))
-  .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
+  .pipe($.if('*.css', $.cleanCss({compatibility: '*'})))
   .pipe($.if('*.js', $.sourcemaps.init()))
   .pipe($.if('*.js', $.uglify()))
   .pipe($.if('*.js', $.sourcemaps.write('.')))
@@ -111,10 +114,11 @@ gulp.task('chromeManifest', () => {
 
 gulp.task('babel', () => {
   return gulp.src('app/scripts.babel/**/*.js')
+      .pipe($.plumber())
       .pipe($.babel({
-        presets: ['es2015']
+        presets: ['@babel/env']
       }))
-      .pipe(gulp.dest('app/scripts.es5'));
+      .pipe(gulp.dest('app/scripts'));
 });
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
@@ -124,7 +128,7 @@ gulp.task('watch', ['lint', 'babel', 'html'], () => {
 
   gulp.watch([
     'app/*.html',
-    'app/scripts.es5/**/*.js',
+    'app/scripts/**/*.js',
     'app/images/**/*',
     'app/styles/**/*',
     'app/_locales/**/*.json'
