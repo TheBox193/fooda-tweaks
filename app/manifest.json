@@ -12,7 +12,7 @@
     "scripts": ["bower_components/moment/min/moment.min.js", "libs/polyfill.min.js", "scripts/chromereload.js", "scripts/background.js"],
     "persistent": true
   },
-  "permissions": ["tabs", "activeTab", "webNavigation", "http://*/*", "https://*/*", "https://app.fooda/*", "background", "history", "contextMenus", "contentSettings", "notifications", "storage", "*://*.google.com/", "alarms"],
+  "permissions": ["tabs", "activeTab", "https://app.fooda/*", "background", "notifications", "storage", "alarms"],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true

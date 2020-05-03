@@ -11,6 +11,7 @@ var api = 'https://api.jstassen.com/apps/chromeextensions/fooda-tweaks/';
 var css = chrome.extension.getURL('styles/fooda.css');
 $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
 
+console.log('Hello Fooda');
 
 // $('.item__photo__img').each((i, img) => {
 // 	img.src = img.src.slice(0, img.src.indexOf('?'));
