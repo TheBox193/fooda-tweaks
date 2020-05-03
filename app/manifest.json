@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -12,7 +12,7 @@
     "scripts": ["bower_components/moment/min/moment.min.js", "libs/polyfill.min.js", "scripts/chromereload.js", "scripts/background.js"],
     "persistent": true
   },
-  "permissions": ["tabs", "activeTab", "https://app.fooda/*", "background", "notifications", "storage", "alarms"],
+  "permissions": ["tabs", "https://app.fooda/*", "background", "notifications", "storage", "alarms"],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
