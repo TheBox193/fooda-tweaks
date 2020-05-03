@@ -1,4 +1,4 @@
-// generated on 2017-01-20 using generator-chrome-extension 0.5.4
+// generated on 2020-05-03 using generator-chrome-extension 0.7.2
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import del from 'del';
@@ -98,6 +98,7 @@ gulp.task('versionBump', () => {
 gulp.task('chromeManifest', () => {
   return gulp.src('app/manifest.json')
     .pipe($.chromeManifest({
+      // buildnumber: true,
       background: {
         target: 'scripts/background.js',
         exclude: [
