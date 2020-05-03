@@ -6,7 +6,7 @@ var isCheckout = (loc[5] === 'checkout');
 var isRestuarants = (loc[1] === 'my');
 
 var TAX = 0.105;
-var api = 'https://jstassen-01.jstassen.com/apps/chromeextensions/fooda-tweaks/';
+var api = 'https://api.jstassen.com/apps/chromeextensions/fooda-tweaks/';
 
 var css = chrome.extension.getURL('styles/fooda.css');
 $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head');
@@ -129,7 +129,7 @@ if (isMenu) {
 				vendorName: getVendorName(itemId),
 				itemScope: getItemScope(itemId),
 				itemId: itemId,
-				vote: vote
+				vote: vote,
 			};
 
 			$.post(api + 'votes', payload);
@@ -255,12 +255,12 @@ if (isRestuarants) {
 
 	chrome.runtime.sendMessage({
 		action: 'createAlarms',
-		dates: _.uniq(datesEmpty)
+		dates: _.uniq(datesEmpty),
 	});
 
 	chrome.runtime.sendMessage({
 		action: 'cancelAlarms',
-		dates: _.uniq(datesOrdered)
+		dates: _.uniq(datesOrdered),
 	});
 }
 

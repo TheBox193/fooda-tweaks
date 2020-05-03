@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -9,48 +9,18 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": [
-      "bower_components/moment/min/moment.min.js",
-      "scripts.es5/chromereload.js",
-      "scripts.es5/background.js"
-    ],
+    "scripts": ["bower_components/moment/min/moment.min.js", "libs/polyfill.min.js", "scripts/chromereload.js", "scripts/background.js"],
     "persistent": true
   },
-  "permissions": [
-    "tabs",
-    "activeTab",
-    "webNavigation",
-    "http://*/*",
-    "https://*/*",
-    "https://app.fooda/*",
-    "background",
-    "history",
-    "contextMenus",
-    "contentSettings",
-    "notifications",
-    "storage",
-    "*://*.google.com/",
-    "alarms"
-  ],
+  "permissions": ["tabs", "activeTab", "webNavigation", "http://*/*", "https://*/*", "https://app.fooda/*", "background", "history", "contextMenus", "contentSettings", "notifications", "storage", "*://*.google.com/", "alarms"],
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
   },
   "content_scripts": [{
-    "matches": [
-      "https://app.fooda.com/*",
-      "*://*.fooda.com/*",
-      "*://fooda.com/*"
-    ],
-    "js": [
-      "bower_components/jquery/dist/jquery.min.js",
-      "bower_components/moment/min/moment.min.js",
-      "bower_components/lodash/dist/lodash.min.js",
-      "scripts.es5/contentscript.js"
-    ],
-    "css": [
-      "styles/fooda.css"
-    ],
+    "matches": ["https://app.fooda.com/*", "*://*.fooda.com/*", "*://fooda.com/*"],
+    "js": ["bower_components/jquery/dist/jquery.min.js", "bower_components/moment/min/moment.min.js", "bower_components/lodash/dist/lodash.min.js", "scripts/contentscript.js"],
+    "css": ["styles/fooda.css"],
     "run_at": "document_end",
     "all_frames": false
   }],
@@ -62,9 +32,5 @@
     "default_title": "fooda-tweaks",
     "default_popup": "popup.html"
   },
-  "web_accessible_resources": [
-    "images/icon-48.png",
-    "images/icon-128.png",
-    "styles/fooda.css"
-  ]
+  "web_accessible_resources": ["images/icon-48.png", "images/icon-128.png", "styles/fooda.css"]
 }

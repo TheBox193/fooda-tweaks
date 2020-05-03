@@ -21,14 +21,14 @@ chrome.runtime.onMessage.addListener(function(request){
 		const alarms = request.dates.map(function(date) {
 			return {
 				name: date,
-				alarm: moment(date, 'YYYY-MM-DD').hour(9).minute(30).unix() * 1000
+				alarm: moment(date, 'YYYY-MM-DD').hour(9).minute(30).unix() * 1000,
 			};
 		});
 		moment('2017-01-24', 'YYYY-MM-DD');
 
 		alarms.forEach(function(item) {
 			chrome.alarms.create(item.name, {
-				when: item.alarm
+				when: item.alarm,
 			});
 		});
 	} else if (request.action == 'cancelAlarms') {
