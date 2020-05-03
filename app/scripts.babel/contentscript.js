@@ -149,10 +149,6 @@ if (isMenu) {
 	});
 }
 
-console.warn('hi!');
-document.children[0].style.backgroundColor = 'green';
-$.get(api + 'votes');
-debugger;
 const getItem = (itemId) => $('*[data-item-id="'+itemId+'"]');
 
 const getItemData = (itemId, key) => getItem(itemId)[0].dataset[key];
