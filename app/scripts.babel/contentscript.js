@@ -23,7 +23,7 @@ $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head'
 // }
 
 // Get & Store Email
-if (  _.isEmpty(localStorage.getItem('email')) || _.isEmpty(localStorage.getItem('USER_ID'))) {
+if (_.isEmpty(localStorage.getItem('email')) || _.isEmpty(localStorage.getItem('USER_ID'))) {
 	$.get('https://app.fooda.com/settings/profile').done((resp) => {
 		const $doc = $(resp);
 		const email = $doc.find('input#user_email').val();
