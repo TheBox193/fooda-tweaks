@@ -11,21 +11,21 @@ module.exports = {
         "$": false
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
+        "comma-dangle": ["error", "always-multiline"],
+        "semi": ["error", "always"],
+        "quotes": ["error", "single"],
+        "no-tabs": "off",
+        "indent": ["error", "tab"],
+        "space-before-blocks": "off",
+        "handle-callback-err": "off",
+        "space-before-function-paren": "off",
+        "no-return-assign": "off",
+        "space-in-parens": "off",
+        "no-dupe-keys": "off",
+        "spaced-comment": "off",
         "linebreak-style": [
             "error",
             "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
         ]
     }
 };

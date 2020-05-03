@@ -23,7 +23,7 @@ $('<link rel="stylesheet" type="text/css" href="' + css + '" >').appendTo('head'
 // }
 
 // Get & Store Email
-if (_.isEmpty(localStorage.getItem('email')) || _.isEmpty(localStorage.getItem('USER_ID'))) {
+if (  _.isEmpty(localStorage.getItem('email')) || _.isEmpty(localStorage.getItem('USER_ID'))) {
 	$.get('https://app.fooda.com/settings/profile').done((resp) => {
 		const $doc = $(resp);
 		const email = $doc.find('input#user_email').val();
@@ -129,7 +129,7 @@ if (isMenu) {
 				vendorName: getVendorName(itemId),
 				itemScope: getItemScope(itemId),
 				itemId: itemId,
-				vote: vote
+				vote: vote,
 			};
 
 			$.post(api + 'votes', payload);
@@ -255,12 +255,12 @@ if (isRestuarants) {
 
 	chrome.runtime.sendMessage({
 		action: 'createAlarms',
-		dates: _.uniq(datesEmpty)
+		dates: _.uniq(datesEmpty),
 	});
 
 	chrome.runtime.sendMessage({
 		action: 'cancelAlarms',
-		dates: _.uniq(datesOrdered)
+		dates: _.uniq(datesOrdered),
 	});
 }
 
