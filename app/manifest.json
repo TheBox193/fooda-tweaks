@@ -50,6 +50,9 @@
         "bower_components/lodash/dist/lodash.min.js",
         "scripts/contentscript.js"
       ],
+    "css": [
+      "styles/fooda.css"
+    ],
       "run_at": "document_end",
       "all_frames": false
     }
